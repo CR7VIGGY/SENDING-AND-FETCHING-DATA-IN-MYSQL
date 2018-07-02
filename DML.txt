@@ -1,0 +1,567 @@
+hbp16@hbp16-Inspiron-3543:~$ sudo mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 4
+Server version: 5.7.22-0ubuntu0.17.10.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| stud_db            |
+| sys                |
++--------------------+
+5 rows in set (0.06 sec)
+
+mysql> use stud_db;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_stud_db |
++-------------------+
+| stud_info         |
++-------------------+
+1 row in set (0.01 sec)
+
+mysql> select * from stud_info
+    -> ;
++----+-----------------+
+| id | name            |
++----+-----------------+
+|  0 | Vighnesh Tiwari |
++----+-----------------+
+1 row in set (0.00 sec)
+
+mysql> delete stud_info;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> drop stud_info;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info' at line 1
+mysql> drop table stud_info;
+Query OK, 0 rows affected (0.27 sec)
+
+mysql> show tables;
+Empty set (0.00 sec)
+
+mysql> create table stud_info(
+    -> sno int not null auto_increment,
+    -> name varchar(255)  not null,
+    -> regno int,
+    -> primary key (regno)
+    -> );
+ERROR 1075 (42000): Incorrect table definition; there can be only one auto column and it must be defined as a key
+mysql> create table stud_info(
+    -> regno int not null auto_increment,
+    -> name varchar(255)  not null,
+    -> branch varchar(255) not null,
+    -> primary key (regno)
+    -> ,);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 6
+mysql> create table stud_info( regno int not null auto_increment, name varchar(255)  not null, branch varchar(255) not null, primary key (regno) );
+Query OK, 0 rows affected (0.39 sec)
+
+mysql> show tables;
++-------------------+
+| Tables_in_stud_db |
++-------------------+
+| stud_info         |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> describe stud_info;
++--------+--------------+------+-----+---------+----------------+
+| Field  | Type         | Null | Key | Default | Extra          |
++--------+--------------+------+-----+---------+----------------+
+| regno  | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name   | varchar(255) | NO   |     | NULL    |                |
+| branch | varchar(255) | NO   |     | NULL    |                |
++--------+--------------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> insert into stud_info (name,branch) values(vighnesh ,it);
+ERROR 1054 (42S22): Unknown column 'vighnesh' in 'field list'
+mysql> insert into stud_info (name,branch) values('vighnesh' ,'it');
+Query OK, 1 row affected (0.11 sec)
+
+mysql> insert into stud_info (name,branch) values('gaurav' ,'it'),('bharat','it');
+Query OK, 2 rows affected (0.07 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud_info;
++-------+----------+--------+
+| regno | name     | branch |
++-------+----------+--------+
+|     1 | vighnesh | it     |
+|     2 | gaurav   | it     |
+|     3 | bharat   | it     |
++-------+----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> insert into stud_info (name,branch) values('avinov' ,'mech'),('kanika','entc');
+Query OK, 2 rows affected (0.09 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud_info;
++-------+----------+--------+
+| regno | name     | branch |
++-------+----------+--------+
+|     1 | vighnesh | it     |
+|     2 | gaurav   | it     |
+|     3 | bharat   | it     |
+|     4 | avinov   | mech   |
+|     5 | kanika   | entc   |
++-------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info
+    -> set name='atul',branch='comp'
+    -> where regno = 1;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+
+| regno | name   | branch |
++-------+--------+--------+
+|     1 | atul   | comp   |
+|     2 | gaurav | it     |
+|     3 | bharat | it     |
+|     4 | avinov | mech   |
+|     5 | kanika | entc   |
++-------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into stud_info (name,branch) values('akhil','mech');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> delete from stud_info 
+    -> where name='akhil';
+Query OK, 1 row affected (0.04 sec)
+
+mysql> select * from stud_info;
++-------+--------+--------+
+| regno | name   | branch |
++-------+--------+--------+
+|     1 | atul   | comp   |
+|     2 | gaurav | it     |
+|     3 | bharat | it     |
+|     4 | avinov | mech   |
+|     5 | kanika | entc   |
++-------+--------+--------+
+5 rows in set (0.00 sec)
+
+mysql> alter stud_info
+    -> add address varchar(255),salary int;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info
+add address varchar(255),salary int' at line 1
+mysql> alter stud_info add address varchar(255);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info add address varchar(255)' at line 1
+mysql> alter table stud_info add address varchar(255),salary int;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'salary int' at line 1
+mysql> alter table stud_info add address varchar(255);
+Query OK, 0 rows affected (0.77 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table stud_info add salary int;
+Query OK, 0 rows affected (0.89 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | NULL    |   NULL |
+|     2 | gaurav | it     | NULL    |   NULL |
+|     3 | bharat | it     | NULL    |   NULL |
+|     4 | avinov | mech   | NULL    |   NULL |
+|     5 | kanika | entc   | NULL    |   NULL |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info
+    -> set address='obh',salary='1000'
+    -> where regno = 1;
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | NULL    |   NULL |
+|     3 | bharat | it     | NULL    |   NULL |
+|     4 | avinov | mech   | NULL    |   NULL |
+|     5 | kanika | entc   | NULL    |   NULL |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info set address='gh',salary='10000' where regno = 5;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update stud_info set address='nbh',salary='20000' where regno = 4;
+Query OK, 1 row affected (0.13 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update stud_info set address='obh',salary='5000' where address = null;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | NULL    |   NULL |
+|     3 | bharat | it     | NULL    |   NULL |
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info set address='obh',salary='5000' where regno = 2;
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update stud_info set address='obh',salary='5000' where regno = 3;
+Query OK, 1 row affected (0.08 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info where address='obh';
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
++-------+--------+--------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from stud_info where salary >= 5000;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info order by salary;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     5 | kanika | entc   | gh      |  10000 |
+|     4 | avinov | mech   | nbh     |  20000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info order by salary desc;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     1 | atul   | comp   | obh     |   1000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info where name like 'A%';
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     4 | avinov | mech   | nbh     |  20000 |
++-------+--------+--------+---------+--------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stud_info where name like '%A';
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from stud_info where name like '%_';
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info where name like '%_%';
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> 
+mysql> select * from stud_info where name like '%/_%';
+Empty set (0.00 sec)
+
+mysql> select * from stud_info where regno like '%/_%';
+Empty set (0.00 sec)
+
+mysql> select name,branch,address,salary+1000 as hike from stud_info;
++--------+--------+---------+-------+
+| name   | branch | address | hike  |
++--------+--------+---------+-------+
+| atul   | comp   | obh     |  2000 |
+| gaurav | it     | obh     |  6000 |
+| bharat | it     | obh     |  6000 |
+| avinov | mech   | nbh     | 21000 |
+| kanika | entc   | gh      | 11000 |
++--------+--------+---------+-------+
+5 rows in set (0.01 sec)
+
+mysql> select name,branch,address,salary+1000 as salary from stud_info;
++--------+--------+---------+--------+
+| name   | branch | address | salary |
++--------+--------+---------+--------+
+| atul   | comp   | obh     |   2000 |
+| gaurav | it     | obh     |   6000 |
+| bharat | it     | obh     |   6000 |
+| avinov | mech   | nbh     |  21000 |
+| kanika | entc   | gh      |  11000 |
++--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> alter stud_info add regno auto_increment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info add regno auto_increment' at line 1
+mysql> alter table stud_info add regno auto_increment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'auto_increment' at line 1
+mysql> alter table stud_info add regno int not null auto_increment;
+ERROR 1060 (42S21): Duplicate column name 'regno'
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1000 |
+|     2 | gaurav | it     | obh     |   5000 |
+|     3 | bharat | it     | obh     |   5000 |
+|     4 | avinov | mech   | nbh     |  20000 |
+|     5 | kanika | entc   | gh      |  10000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from name,branch;
+ERROR 1146 (42S02): Table 'stud_db.name' doesn't exist
+mysql> create stud_res(
+    -> regno int not null auto_increment;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_res(
+regno int not null auto_increment' at line 1
+mysql> create stud_res( regno int not null auto_increment , marks);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_res( regno int not null auto_increment , marks)' at line 1
+mysql> create table stud_res( regno int not null auto_increment , marks);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+mysql> create table stud_res( regno int not null auto_increment , marks int,primary key (regno));
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> describe stud_res;
++-------+---------+------+-----+---------+----------------+
+| Field | Type    | Null | Key | Default | Extra          |
++-------+---------+------+-----+---------+----------------+
+| regno | int(11) | NO   | PRI | NULL    | auto_increment |
+| marks | int(11) | YES  |     | NULL    |                |
++-------+---------+------+-----+---------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into stud_res (marks) values('448');
+Query OK, 1 row affected (0.06 sec)
+
+mysql> select * from stud_res;
++-------+-------+
+| regno | marks |
++-------+-------+
+|     1 |   448 |
++-------+-------+
+1 row in set (0.00 sec)
+
+mysql> insert into stud_res (marks) values('458'),('440'),('467'),('465');
+Query OK, 4 rows affected (0.06 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud_res;
++-------+-------+
+| regno | marks |
++-------+-------+
+|     1 |   448 |
+|     2 |   458 |
+|     3 |   440 |
+|     4 |   467 |
+|     5 |   465 |
++-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info , stud_res;
++-------+--------+--------+---------+--------+-------+-------+
+| regno | name   | branch | address | salary | regno | marks |
++-------+--------+--------+---------+--------+-------+-------+
+|     1 | atul   | comp   | obh     |   1000 |     1 |   448 |
+|     2 | gaurav | it     | obh     |   5000 |     1 |   448 |
+|     3 | bharat | it     | obh     |   5000 |     1 |   448 |
+|     4 | avinov | mech   | nbh     |  20000 |     1 |   448 |
+|     5 | kanika | entc   | gh      |  10000 |     1 |   448 |
+|     1 | atul   | comp   | obh     |   1000 |     2 |   458 |
+|     2 | gaurav | it     | obh     |   5000 |     2 |   458 |
+|     3 | bharat | it     | obh     |   5000 |     2 |   458 |
+|     4 | avinov | mech   | nbh     |  20000 |     2 |   458 |
+|     5 | kanika | entc   | gh      |  10000 |     2 |   458 |
+|     1 | atul   | comp   | obh     |   1000 |     3 |   440 |
+|     2 | gaurav | it     | obh     |   5000 |     3 |   440 |
+|     3 | bharat | it     | obh     |   5000 |     3 |   440 |
+|     4 | avinov | mech   | nbh     |  20000 |     3 |   440 |
+|     5 | kanika | entc   | gh      |  10000 |     3 |   440 |
+|     1 | atul   | comp   | obh     |   1000 |     4 |   467 |
+|     2 | gaurav | it     | obh     |   5000 |     4 |   467 |
+|     3 | bharat | it     | obh     |   5000 |     4 |   467 |
+|     4 | avinov | mech   | nbh     |  20000 |     4 |   467 |
+|     5 | kanika | entc   | gh      |  10000 |     4 |   467 |
+|     1 | atul   | comp   | obh     |   1000 |     5 |   465 |
+|     2 | gaurav | it     | obh     |   5000 |     5 |   465 |
+|     3 | bharat | it     | obh     |   5000 |     5 |   465 |
+|     4 | avinov | mech   | nbh     |  20000 |     5 |   465 |
+|     5 | kanika | entc   | gh      |  10000 |     5 |   465 |
++-------+--------+--------+---------+--------+-------+-------+
+25 rows in set (0.00 sec)
+
+mysql> select * from stud_info , stud_res where did=did;
+ERROR 1054 (42S22): Unknown column 'did' in 'where clause'
+mysql> select * from stud_info , stud_res where regno=regno;
+ERROR 1052 (23000): Column 'regno' in where clause is ambiguous
+mysql> select * from stud_info , stud_res where stud_info.regno=stud_res.regno;
++-------+--------+--------+---------+--------+-------+-------+
+| regno | name   | branch | address | salary | regno | marks |
++-------+--------+--------+---------+--------+-------+-------+
+|     1 | atul   | comp   | obh     |   1000 |     1 |   448 |
+|     2 | gaurav | it     | obh     |   5000 |     2 |   458 |
+|     3 | bharat | it     | obh     |   5000 |     3 |   440 |
+|     4 | avinov | mech   | nbh     |  20000 |     4 |   467 |
+|     5 | kanika | entc   | gh      |  10000 |     5 |   465 |
++-------+--------+--------+---------+--------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info natural join stud_res;
++-------+--------+--------+---------+--------+-------+
+| regno | name   | branch | address | salary | marks |
++-------+--------+--------+---------+--------+-------+
+|     1 | atul   | comp   | obh     |   1000 |   448 |
+|     2 | gaurav | it     | obh     |   5000 |   458 |
+|     3 | bharat | it     | obh     |   5000 |   440 |
+|     4 | avinov | mech   | nbh     |  20000 |   467 |
+|     5 | kanika | entc   | gh      |  10000 |   465 |
++-------+--------+--------+---------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info
+    -> set * salary=salary+0.1*salary;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '* salary=salary+0.1*salary' at line 2
+mysql> update stud_info set  salary=salary+0.1*salary;
+Query OK, 5 rows affected (0.07 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from stud_info natural join stud_res;
++-------+--------+--------+---------+--------+-------+
+| regno | name   | branch | address | salary | marks |
++-------+--------+--------+---------+--------+-------+
+|     1 | atul   | comp   | obh     |   1100 |   448 |
+|     2 | gaurav | it     | obh     |   5500 |   458 |
+|     3 | bharat | it     | obh     |   5500 |   440 |
+|     4 | avinov | mech   | nbh     |  22000 |   467 |
+|     5 | kanika | entc   | gh      |  11000 |   465 |
++-------+--------+--------+---------+--------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info inner join stud_res on stud_info.regno = stud_res.regno;
++-------+--------+--------+---------+--------+-------+-------+
+| regno | name   | branch | address | salary | regno | marks |
++-------+--------+--------+---------+--------+-------+-------+
+|     1 | atul   | comp   | obh     |   1100 |     1 |   448 |
+|     2 | gaurav | it     | obh     |   5500 |     2 |   458 |
+|     3 | bharat | it     | obh     |   5500 |     3 |   440 |
+|     4 | avinov | mech   | nbh     |  22000 |     4 |   467 |
+|     5 | kanika | entc   | gh      |  11000 |     5 |   465 |
++-------+--------+--------+---------+--------+-------+-------+
+5 rows in set (0.01 sec)
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1100 |
+|     2 | gaurav | it     | obh     |   5500 |
+|     3 | bharat | it     | obh     |   5500 |
+|     4 | avinov | mech   | nbh     |  22000 |
+|     5 | kanika | entc   | gh      |  11000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_res;
++-------+-------+
+| regno | marks |
++-------+-------+
+|     1 |   448 |
+|     2 |   458 |
+|     3 |   440 |
+|     4 |   467 |
+|     5 |   465 |
++-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> 
