@@ -1,0 +1,466 @@
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 5
+Server version: 5.7.22-0ubuntu0.17.10.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| stud_db            |
+| sys                |
++--------------------+
+5 rows in set (0.08 sec)
+
+mysql> use stud_db;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> show tables;
++-------------------+
+| Tables_in_stud_db |
++-------------------+
+| stud_info         |
+| stud_res          |
++-------------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+
+| regno | name   | branch | address | salary |
++-------+--------+--------+---------+--------+
+|     1 | atul   | comp   | obh     |   1100 |
+|     2 | gaurav | it     | obh     |   5500 |
+|     3 | bharat | it     | obh     |   5500 |
+|     4 | avinov | mech   | nbh     |  22000 |
+|     5 | kanika | entc   | gh      |  11000 |
++-------+--------+--------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> select sum(salary) from stud_info group by regno;
++-------------+
+| sum(salary) |
++-------------+
+|        1100 |
+|        5500 |
+|        5500 |
+|       22000 |
+|       11000 |
++-------------+
+5 rows in set (0.03 sec)
+
+mysql> select sum(salary) from stud_info group by name;
++-------------+
+| sum(salary) |
++-------------+
+|        1100 |
+|       22000 |
+|        5500 |
+|        5500 |
+|       11000 |
++-------------+
+5 rows in set (0.03 sec)
+
+mysql> time()
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'time()' at line 1
+mysql> time();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'time()' at line 1
+mysql> now();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'now()' at line 1
+mysql> alter stud_info add joindate date;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info add joindate date' at line 1
+mysql> alter stud_info add joindate date();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info add joindate date()' at line 1
+mysql> alter stud_info add joindate Date();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info add joindate Date()' at line 1
+mysql> alter stud_info add joindate DATE();
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info add joindate DATE()' at line 1
+mysql> alter stud_info add joindate datetime;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'stud_info add joindate datetime' at line 1
+mysql> alter table stud_info add joindate date;
+Query OK, 0 rows affected (0.93 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+----------+
+| regno | name   | branch | address | salary | joindate |
++-------+--------+--------+---------+--------+----------+
+|     1 | atul   | comp   | obh     |   1100 | NULL     |
+|     2 | gaurav | it     | obh     |   5500 | NULL     |
+|     3 | bharat | it     | obh     |   5500 | NULL     |
+|     4 | avinov | mech   | nbh     |  22000 | NULL     |
+|     5 | kanika | entc   | gh      |  11000 | NULL     |
++-------+--------+--------+---------+--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info
+    -> set joindate='2016-01-16' where regno=1;
+Query OK, 1 row affected (0.09 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | NULL       |
+|     3 | bharat | it     | obh     |   5500 | NULL       |
+|     4 | avinov | mech   | nbh     |  22000 | NULL       |
+|     5 | kanika | entc   | gh      |  11000 | NULL       |
++-------+--------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info set joindate='2016-02-16' where regno=2;
+Query OK, 1 row affected (0.07 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update stud_info set joindate='2016-02-16' where joindate is NULL;
+Query OK, 3 rows affected (0.08 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2016-02-16 |
++-------+--------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> update stud_info
+    -> set joindate='2017-12-31' where regno=5;
+Query OK, 1 row affected (0.06 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update stud_info set joindate='2016-02-16' where joindate is NULL;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
++-------+--------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info where joindate > '2016-02-16';
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
++-------+--------+--------+---------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from stud_info where joindate < now();
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
++-------+--------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info where joindate > '2017-11-01 && joindate <= now();
+    '> ;
+    '> );
+    '> 
+[1]+  Stopped                 sudo mysql -u root -p
+hbp16@hbp16-Inspiron-3543:~$ sudo mysql -u root -p
+[sudo] password for hbp16: 
+Sorry, try again.
+[sudo] password for hbp16: 
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 6
+Server version: 5.7.22-0ubuntu0.17.10.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> use stud_db;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
++-------+--------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info where joindate > '2017-11-01' and joindate < now();
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
++-------+--------+--------+---------+--------+------------+
+1 row in set (0.00 sec)
+
+mysql> select * from stud_res
+    -> ;
++-------+-------+
+| regno | marks |
++-------+-------+
+|     1 |   448 |
+|     2 |   458 |
+|     3 |   440 |
+|     4 |   467 |
+|     5 |   465 |
++-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select stud_info,stud_res where stud_info.regno = stud_res.regno;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'where stud_info.regno = stud_res.regno' at line 1
+mysql> select * from  stud_info,stud_res where stud_info.regno = stud_res.regno;
++-------+--------+--------+---------+--------+------------+-------+-------+
+| regno | name   | branch | address | salary | joindate   | regno | marks |
++-------+--------+--------+---------+--------+------------+-------+-------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |     1 |   448 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |     2 |   458 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |     3 |   440 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |     4 |   467 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |     5 |   465 |
++-------+--------+--------+---------+--------+------------+-------+-------+
+5 rows in set (0.00 sec)
+
+mysql> select * from  stud_info;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
++-------+--------+--------+---------+--------+------------+
+5 rows in set (0.00 sec)
+
+mysql> 
+[2]+  Stopped                 sudo mysql -u root -p
+hbp16@hbp16-Inspiron-3543:~$ sudo mysql -u root -p
+Enter password: 
+ERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)
+hbp16@hbp16-Inspiron-3543:~$ sudo mysql -u root -p
+Enter password: 
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 5.7.22-0ubuntu0.17.10.1 (Ubuntu)
+
+Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> insert into stud_info(name,branch,address,salary,joindate)values('somesh','comp','dighi','100','2018-5-23');
+ERROR 1046 (3D000): No database selected
+mysql> use stud_db;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> insert into stud_info(name,branch,address,salary,joindate)values('somesh','comp','dighi','100','2018-5-23');
+Query OK, 1 row affected (0.23 sec)
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
+|     6 | somesh | comp   | dighi   |    100 | 2018-05-23 |
++-------+--------+--------+---------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select * from stud_info order by joindate;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
+|     6 | somesh | comp   | dighi   |    100 | 2018-05-23 |
++-------+--------+--------+---------+--------+------------+
+6 rows in set (0.01 sec)
+
+mysql> select * from stud_info order by name;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
+|     6 | somesh | comp   | dighi   |    100 | 2018-05-23 |
++-------+--------+--------+---------+--------+------------+
+6 rows in set (0.01 sec)
+
+mysql> select name,sum(salary) as totalsal from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno;
++--------+----------+
+| name   | totalsal |
++--------+----------+
+| atul   |     1100 |
+| gaurav |     5500 |
+| bharat |     5500 |
+| avinov |    22000 |
+| kanika |    11000 |
++--------+----------+
+5 rows in set (0.00 sec)
+
+mysql> select name,sum(salary) as totalsal from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno and s.address;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'stud_db.s.name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select name,sum(salary) as totalsal from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno,s.address;
++--------+----------+
+| name   | totalsal |
++--------+----------+
+| atul   |     1100 |
+| gaurav |     5500 |
+| bharat |     5500 |
+| avinov |    22000 |
+| kanika |    11000 |
++--------+----------+
+5 rows in set (0.01 sec)
+
+mysql> select name,sum(salary) as totalsal from stud_info as s,stud_res as r where s.regno = r.regno group by s.joindate;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'stud_db.s.name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select name,sum(salary) as totalsal from stud_info as s,stud_res as r where s.regno = r.regno group by s.joindate;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'stud_db.s.name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select regno , address as addr from stud_info as s,stud_res as r where s.regno = r.regno group by address;
+ERROR 1052 (23000): Column 'regno' in field list is ambiguous
+mysql> select regno , address as addr from stud_info as s,stud_res as r where s.regno = r.regno;
+ERROR 1052 (23000): Column 'regno' in field list is ambiguous
+mysql> select regno , address as addr from stud_info as s,stud_res as r where s.regno = r.regno group by regno;
+ERROR 1052 (23000): Column 'regno' in field list is ambiguous
+mysql> select name , address as addr from stud_info as s,stud_res as r where s.regno = r.regno group by regno;
+ERROR 1052 (23000): Column 'regno' in group statement is ambiguous
+mysql> select regno , address from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno;
+ERROR 1052 (23000): Column 'regno' in field list is ambiguous
+mysql> select regno , address from stud_info as s,stud_res as r where s.regno = r.regno group by r.regno;
+ERROR 1052 (23000): Column 'regno' in field list is ambiguous
+mysql> select name , address from stud_info as s,stud_res as r where s.regno = r.regno group by r.regno;
++--------+---------+
+| name   | address |
++--------+---------+
+| atul   | obh     |
+| gaurav | obh     |
+| bharat | obh     |
+| avinov | nbh     |
+| kanika | gh      |
++--------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select name , address as addr from stud_info as s,stud_res as r where s.regno = r.regno group by r.regno;
++--------+------+
+| name   | addr |
++--------+------+
+| atul   | obh  |
+| gaurav | obh  |
+| bharat | obh  |
+| avinov | nbh  |
+| kanika | gh   |
++--------+------+
+5 rows in set (0.00 sec)
+
+mysql> select name , address as addr,joindate from stud_info as s,stud_res as r where s.regno = r.regno group by s.joindate;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'stud_db.s.name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select name , address as addr,joindate from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno;
++--------+------+------------+
+| name   | addr | joindate   |
++--------+------+------------+
+| atul   | obh  | 2016-01-16 |
+| gaurav | obh  | 2016-02-16 |
+| bharat | obh  | 2016-02-16 |
+| avinov | nbh  | 2016-02-16 |
+| kanika | gh   | 2017-12-31 |
++--------+------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from stud_info;
++-------+--------+--------+---------+--------+------------+
+| regno | name   | branch | address | salary | joindate   |
++-------+--------+--------+---------+--------+------------+
+|     1 | atul   | comp   | obh     |   1100 | 2016-01-16 |
+|     2 | gaurav | it     | obh     |   5500 | 2016-02-16 |
+|     3 | bharat | it     | obh     |   5500 | 2016-02-16 |
+|     4 | avinov | mech   | nbh     |  22000 | 2016-02-16 |
+|     5 | kanika | entc   | gh      |  11000 | 2017-12-31 |
+|     6 | somesh | comp   | dighi   |    100 | 2018-05-23 |
++-------+--------+--------+---------+--------+------------+
+6 rows in set (0.00 sec)
+
+mysql> insert into stud_res(marks) values ('340');
+Query OK, 1 row affected (0.07 sec)
+
+mysql> select name , address as addr,joindate from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno;
++--------+-------+------------+
+| name   | addr  | joindate   |
++--------+-------+------------+
+| atul   | obh   | 2016-01-16 |
+| gaurav | obh   | 2016-02-16 |
+| bharat | obh   | 2016-02-16 |
+| avinov | nbh   | 2016-02-16 |
+| kanika | gh    | 2017-12-31 |
+| somesh | dighi | 2018-05-23 |
++--------+-------+------------+
+6 rows in set (0.00 sec)
+
+mysql> select name , address as addr,joindate from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno and s.adress;
+ERROR 1054 (42S22): Unknown column 's.adress' in 'group statement'
+mysql> select name , address as addr,joindate from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno and s.address;
+ERROR 1055 (42000): Expression #1 of SELECT list is not in GROUP BY clause and contains nonaggregated column 'stud_db.s.name' which is not functionally dependent on columns in GROUP BY clause; this is incompatible with sql_mode=only_full_group_by
+mysql> select name , address as addr,joindate from stud_info as s,stud_res as r where s.regno = r.regno group by s.regno;
++--------+-------+------------+
+| name   | addr  | joindate   |
++--------+-------+------------+
+| atul   | obh   | 2016-01-16 |
+| gaurav | obh   | 2016-02-16 |
+| bharat | obh   | 2016-02-16 |
+| avinov | nbh   | 2016-02-16 |
+| kanika | gh    | 2017-12-31 |
+| somesh | dighi | 2018-05-23 |
++--------+-------+------------+
+6 rows in set (0.00 sec)
+
+mysql> 
